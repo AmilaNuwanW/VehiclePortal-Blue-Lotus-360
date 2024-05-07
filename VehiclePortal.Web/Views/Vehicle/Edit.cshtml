@@ -1,0 +1,76 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model VehiclePortal.Web.Models.Entities.Vehicle
+
+<h1>Edit Vehicle</h1>
+
+@if (!string.IsNullOrEmpty(Model.ImageBase64))
+{
+    <img src="data:image;base64,@Model.ImageBase64" alt="Vehicle Image" style="width: 200px; height: 150px;"/>
+}
+
+@if(Model is null){
+    <p>No vehicle was found with this Id</p>
+}else{
+
+
+    <form method="post" enctype="multipart/form-data">
+
+@*     <div>
+        <lable class="form-lable">Id</lable>
+        <input type="text" class="form-control" asp-for="Id" readonly />
+    </div> *@
+    <div>
+        <lable class="form-lable">Make</lable>
+        <input type="text" class="form-control" asp-for="Make" required/>
+    </div>
+
+    <div>
+        <lable class="form-lable">Model</lable>
+            <input type="text" class="form-control" asp-for="Model" required />
+    </div>
+
+    <div>
+        <lable class="form-lable">Year</lable>
+            <input type="text" class="form-control" asp-for="Year" required />
+    </div>
+
+    <div>
+        <lable class="form-lable">Color</lable>
+            <input type="text" class="form-control" asp-for="Color" required />
+    </div>
+
+    <div>
+        <lable class="form-lable">Vehicle Identification Number</lable>
+            <input type="text" class="form-control" asp-for="VIN" required />
+    </div>
+
+    <div>
+        <lable class="form-lable">License Plate</lable>
+            <input type="text" class="form-control" asp-for="LicensePlate" pattern="[A-Z]{3}\d{4}" title="License plate must be in the format ABC1234" required />
+    </div>
+
+        <div>
+            <label class="form-label">Image</label>
+            <input type="file" class="form-control" asp-for="ImageFile" />
+        </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        
+            @* <button type="submit" class="btn btn-danger ms-3"
+                asp-action="Delete"
+                asp-controller="Vehicle"
+            >Delete</button> *@
+    </div>
+
+
+</form>
+
+}
+
+

@@ -1,0 +1,79 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@{
+    var message = TempData["Message"] as string;
+}
+@{
+    var errormessage = TempData["ErrorMessage"] as string;
+}
+
+@model List<VehiclePortal.Web.Models.Entities.Vehicle>
+
+<h1>Vehicles</h1>
+
+@if (!string.IsNullOrEmpty(message) || !string.IsNullOrEmpty(errormessage))
+{
+    if (!string.IsNullOrEmpty(message))
+    {
+        <div class="alert alert-success">
+            <strong>@message</strong>
+        </div>
+    }
+
+    if (!string.IsNullOrEmpty(errormessage))
+    {
+        <div class="alert alert-danger">
+            <strong>@errormessage</strong>
+        </div>
+    }
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Color</th>
+            <th>VIN</th>
+            <th>License Plate</th>
+            <th>Image</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var vehicle in Model)
+        {
+            <tr>
+                <td>@vehicle.Make</td>
+                <td>@vehicle.Model</td>
+                <td>@vehicle.Year</td>
+                <td>@vehicle.Color</td>
+                <td>@vehicle.VIN</td>
+                <td>@vehicle.LicensePlate</td>
+                <td><img src="data:image;base64,@vehicle.ImageBase64" alt="Vehicle Image" style="width: 50px; height: 37.5px;" /></td>
+                <td>
+                    <div class="row">
+                        <div class="col">
+                            <a class="btn btn-primary" asp-controller="Vehicle" asp-action="Edit" asp-route-id="@vehicle.Id">Edit</a>
+                        </div>
+                        <div class="col">
+                            <form asp-controller="Vehicle" asp-action="Delete" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@vehicle.Id" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="mt-3">
+    <a class="btn btn-primary" asp-controller="Vehicle" asp-action="Create">Add New Vehicle</a>
+</div>
