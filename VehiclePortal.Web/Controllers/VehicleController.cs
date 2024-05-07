@@ -27,8 +27,21 @@ namespace VehiclePortal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateVehicleViewModel viewModel)
         {
-            try { 
-            var vehicle = new Vehicle
+            try {
+
+                if (await dbContext.Vehicles.AnyAsync(v => v.VIN == viewModel.VIN))
+                {
+                    TempData["ErrorMessage"] = "Vehicle with the same VIN already exists.";
+                    return View();
+                }
+
+                if (await dbContext.Vehicles.AnyAsync(v => v.LicensePlate == viewModel.LicensePlate))
+                {
+                    TempData["ErrorMessage"] = "Vehicle with the same License Plate already exists.";
+                    return View();
+                }
+
+                var vehicle = new Vehicle
             {
                 Make = viewModel.Make,
                 Model = viewModel.Model,
@@ -57,12 +70,9 @@ namespace VehiclePortal.Web.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something Went Wrong";
-                //Console.WriteLine(ex);
-                //Console.ReadLine();
             }
 
             return View();
-            //return RedirectToAction("Details", "Vehicle");
         }
 
         [HttpGet]
@@ -84,11 +94,30 @@ namespace VehiclePortal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Vehicle viewModel)
         {
-            try { 
+            try {
+
                 var vehicle = await dbContext.Vehicles.FindAsync(viewModel.Id);
 
                 if(vehicle is not null)
                 {
+
+                    if (vehicle.VIN != viewModel.VIN)
+                    {
+                        if (await dbContext.Vehicles.AnyAsync(v => v.VIN == viewModel.VIN))
+                        {
+                            TempData["ErrorMessage"] = "Another vehicle with the same VIN already exists.";
+                            return View(vehicle);
+                        }
+                    }
+                    if (vehicle.LicensePlate != viewModel.LicensePlate)
+                    {
+                        if (await dbContext.Vehicles.AnyAsync(v => v.LicensePlate == viewModel.LicensePlate))
+                        {
+                            TempData["ErrorMessage"] = "Another vehicle with the same License Plate already exists.";
+                            return View(vehicle);
+                        }
+                    }
+
                     vehicle.Make = viewModel.Make;
                     vehicle.Model = viewModel.Model;
                     vehicle.Year = viewModel.Year;

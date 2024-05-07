@@ -4,19 +4,44 @@
 @{
 }
 
+@{
+    var message = TempData["Message"] as string;
+}
+@{
+    var errormessage = TempData["ErrorMessage"] as string;
+}
+
 @model VehiclePortal.Web.Models.Entities.Vehicle
 
 <h1>Edit Vehicle</h1>
 
-@if (!string.IsNullOrEmpty(Model.ImageBase64))
+@if (!string.IsNullOrEmpty(message) || !string.IsNullOrEmpty(errormessage))
 {
-    <img src="data:image;base64,@Model.ImageBase64" alt="Vehicle Image" style="width: 200px; height: 150px;"/>
+    if (!string.IsNullOrEmpty(message))
+    {
+        <div class="alert alert-success">
+            <strong>@message</strong>
+        </div>
+    }
+
+    if (!string.IsNullOrEmpty(errormessage))
+    {
+        <div class="alert alert-danger">
+            <strong>@errormessage</strong>
+        </div>
+    }
 }
+
+
 
 @if(Model is null){
     <p>No vehicle was found with this Id</p>
 }else{
 
+    @if (!string.IsNullOrEmpty(Model.ImageBase64))
+    {
+        <img src="data:image;base64,@Model.ImageBase64" alt="Vehicle Image" style="width: 200px; height: 150px;" />
+    }
 
     <form method="post" enctype="multipart/form-data">
 
