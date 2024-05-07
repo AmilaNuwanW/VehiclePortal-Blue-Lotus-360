@@ -47,17 +47,10 @@ if(!string.IsNullOrEmpty(errormessage))
         <input type="text" class="form-control" asp-for="Model" required />
 </div>
 
-<div>
-     <lable class="form-lable">Year</lable>
-        <input type="text" class="form-control" asp-for="Year" required /> 
-        @* <label class="form-lable">Year</label>
-        <select class="form-control" asp-for="Year" required>
-            @for (int year = 1900; year <= 2024; year++)
-            {
-                <option value="@year">@year</option>
-            }
-        </select> *@
-</div>
+    <div>
+        <label class="form-lable">Year</label>
+        <input type="number" class="form-control" asp-for="Year" min="1900" max="2024" required />
+    </div>
 
 <div>
     <lable class="form-lable">Color</lable>
