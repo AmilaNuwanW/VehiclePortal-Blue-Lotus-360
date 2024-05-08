@@ -19,17 +19,28 @@
 {
     if (!string.IsNullOrEmpty(message))
     {
-        <div class="alert alert-success">
-            <strong>@message</strong>
+        <div id="successToast" class="toast align-items-center text-white bg-success border-0 position-fixed top-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @message
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
         </div>
     }
 
     if (!string.IsNullOrEmpty(errormessage))
     {
-        <div class="alert alert-danger">
-            <strong>@errormessage</strong>
+        <div id="errorToast" class="toast align-items-center text-white bg-danger border-0 position-fixed top-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @errormessage
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
         </div>
     }
+
 }
 
 <table class="table">
@@ -77,3 +88,25 @@
 <div class="mt-3">
     <a class="btn btn-primary" asp-controller="Vehicle" asp-action="Create">Add New Vehicle</a>
 </div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var successToast = new bootstrap.Toast(document.getElementById('successToast'));
+            var errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <text>successToast.show();</text>
+                <text>setTimeout(function() { successToast.hide(); }, 3000);</text>
+            }
+
+            @if (!string.IsNullOrEmpty(errormessage))
+            {
+                <text>errorToast.show();</text>
+                <text>setTimeout(function() { errorToast.hide(); }, 3000);</text>
+            }
+        });
+    </script>
+}
